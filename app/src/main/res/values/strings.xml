@@ -14,10 +14,12 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
 
-    <string name="Full_name">Full name</string>
+    <string name="First_name">First name</string>
+    <string name="Last_name">Last name</string>
     <string name="email">email</string>
     <string name="confirm_email">confirm email</string>
     <string name="phone_number">phone number</string>
     <string name="confirm_phone_number">confirm phone number</string>
     <string name="save">Save</string>
+    <string name="edit">Edit</string>
 </resources>
