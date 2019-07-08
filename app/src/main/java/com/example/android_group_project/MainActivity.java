@@ -19,12 +19,22 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    List<ItemList> itemList;
+
+    //the recyclerview
+    RecyclerView itemRecyclerView;
 
 
     String[] PERMISSIONS = {Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE,
@@ -34,6 +44,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        itemRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewforItems);
+        itemRecyclerView.setHasFixedSize(true);
+        itemRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -58,6 +71,46 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        //getting the recyclerview from xml
+
+
+        //initializing the productlist
+        itemList = new ArrayList<>();
+
+
+        //adding some items to our list
+        itemList.add(
+                new ItemList(
+                        1,
+                        "Windsor Salt",
+                        "abcdefggggggggggggggggggggggggggggggggg",
+                        15,
+                        8,
+                        R.drawable.salt));
+
+        itemList.add(
+                new ItemList(
+                        1,
+                        "Sugar",
+                        "abcdefweqweqweweqewqewqeqweqwqwwqeqwewqw",
+                        15,
+                        5,
+                        R.drawable.sugar));
+
+        itemList.add(
+                new ItemList(
+                        1,
+                        "Nestle Coffee",
+                        "abcdefqweqweqwewqeqweqwewqewqewewdsadsda",
+                        17,
+                        7,
+                        R.drawable.coffee));
+
+        //creating recyclerview adapter
+        ItemListAdapter adapter = new ItemListAdapter(this, itemList);
+
+        //setting adapter to recyclerview
+        itemRecyclerView.setAdapter(adapter);
     }
 
     @Override
