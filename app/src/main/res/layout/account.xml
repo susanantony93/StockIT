@@ -80,6 +80,7 @@
             android:layout_marginRight="20dp"
             android:layout_weight="1"
             android:background="#377d9d"/>
+
     <Button
         android:id="@+id/save_button"
         android:text="@string/save"
