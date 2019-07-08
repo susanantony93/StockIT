@@ -26,14 +26,14 @@ public class view_products extends AppCompatActivity {
         stock_edit_button = (Button)findViewById(R.id.editStock);
 
 
-        setContentView(R.layout.view_product);
-//        stock_edit_button.setOnClickListener(new View.OnClickListener(){
-//
-//            @Override
-//            public void onClick(View v){
-//                stock_edit.setEnabled(true);
-//            }
-//        });
+        setContentView(R.layout.view_products);
+        stock_edit_button.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v){
+                stock_edit.setEnabled(true);
+            }
+        });
 
     }
 
