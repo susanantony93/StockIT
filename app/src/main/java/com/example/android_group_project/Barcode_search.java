@@ -98,7 +98,7 @@ public class Barcode_search extends AppCompatActivity implements ZXingScannerVie
             public void onClick(DialogInterface dialog, int i) {
 //                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(scanResult));
 //                startActivity(intent);
-                Intent intent = new Intent(Barcode_search.this, view_products.class);
+                Intent intent = new Intent(Barcode_search.this, view_product.class);
 
                 intent.putExtra("barcodeResult", scanResult);
                 startActivity(intent);
@@ -115,4 +115,6 @@ public class Barcode_search extends AppCompatActivity implements ZXingScannerVie
         AlertDialog alert = builder.create();
         alert.show();
     }
+
+
 }

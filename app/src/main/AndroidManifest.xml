@@ -16,10 +16,33 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".About_us"
+            android:label="@string/title_activity_about_us"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Help_Page"
+            android:label="@string/title_activity_help__page"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Account_managment"
+            android:label="@string/title_activity_account_managment"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Settings"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".alerts_list"
+            android:label="@string/title_activity_alerts_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view_product"
+            android:label="@string/title_activity_view_product"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".Barcode_search"
             android:label="@string/title_activity_barcode_search"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".view_products" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
