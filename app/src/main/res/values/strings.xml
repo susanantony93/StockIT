@@ -16,6 +16,8 @@
     <string name="confirm_phone_number">confirm phone number</string>
     <string name="save">Save</string>
     <string name="edit">Edit</string>
+    <string name="send_sms">Send SMS</string>
+    <string name="open_dialer">Open Dialer</string>
 
     <string name="menu_alerts">Alerts</string>
     <string name="menu_Bluetooth">Home</string>

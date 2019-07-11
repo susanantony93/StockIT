@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity
     RecyclerView itemRecyclerView;
 
 
-    String[] PERMISSIONS = {Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE,
-                            Manifest.permission.RECEIVE_SMS, Manifest.permission.CAMERA};
+    String[] PERMISSIONS = {Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE, Manifest.permission.LOCATION_HARDWARE,
+                            Manifest.permission.RECEIVE_SMS, Manifest.permission.CAMERA, Manifest.permission.INTERNET, Manifest.permission.CALL_PHONE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
