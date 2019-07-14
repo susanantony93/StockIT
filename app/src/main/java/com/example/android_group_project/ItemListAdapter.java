@@ -1,10 +1,12 @@
 package com.example.android_group_project;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.List;
@@ -31,13 +33,14 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemVi
         //inflating and returning our view holder
         LayoutInflater inflate = LayoutInflater.from(ctxItem);
         View view = inflate.inflate(R.layout.item_list, null);
+
         return new ItemViewHold(view);
     }
 
     @Override
     public void onBindViewHolder(ItemViewHold itemHolder, int position) {
         //getting the product of the specified position
-        ItemList item = itemList.get(position);
+        final ItemList item = itemList.get(position);
 
         //binding the data with the viewholder views
         itemHolder.nameTextView.setText(item.getItemName());
@@ -46,6 +49,14 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemVi
         itemHolder.priceTextView.setText(String.valueOf(item.getItemPrice()));
 
         itemHolder.itemImageView.setImageDrawable(ctxItem.getResources().getDrawable(item.getItemImage()));
+        itemHolder.buttonToDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(ctxItem,view_products.class);
+                intent.putExtra("id",item.getId());
+                ctxItem.startActivity(intent);
+            }
+        });
 
     }
 
@@ -60,6 +71,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemVi
 
         TextView nameTextView, descTextView, ratingTextView, priceTextView;
         ImageView itemImageView;
+        Button buttonToDetail;
 
         public ItemViewHold(View itemView) {
             super(itemView);
@@ -69,6 +81,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemVi
             ratingTextView = itemView.findViewById(R.id.itemRatingTextView);
             priceTextView = itemView.findViewById(R.id.itemPriceTextView);
             itemImageView = itemView.findViewById(R.id.imageView);
+            buttonToDetail=itemView.findViewById(R.id.viewItem);
         }
     }
 }
