@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -37,8 +38,8 @@ public class MainActivity extends AppCompatActivity
     RecyclerView itemRecyclerView;
 
 
-    String[] PERMISSIONS = {Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE,
-                            Manifest.permission.RECEIVE_SMS, Manifest.permission.CAMERA};
+    String[] PERMISSIONS = {Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE, Manifest.permission.LOCATION_HARDWARE,
+                            Manifest.permission.RECEIVE_SMS, Manifest.permission.CAMERA, Manifest.permission.INTERNET, Manifest.permission.CALL_PHONE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,23 +191,28 @@ public class MainActivity extends AppCompatActivity
     }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        int id = menuItem.getItemId();
 
         if (id == R.id.nav_alerts) {
-            Intent myintent = new Intent(MainActivity.this, view_products.class);
-            startActivity(myintent);
-        } else if (id == R.id.nav_BluetoothShare) {
-
+            Intent myintent1 = new Intent(MainActivity.this, alerts_list.class);
+            startActivity(myintent1);
         } else if (id == R.id.nav_settings) {
-
+            Intent myintent2 = new Intent(MainActivity.this, Settings.class);
+            startActivity(myintent2);
         } else if (id == R.id.nav_account) {
-
-        } else if (id == R.id.nav_help) {
-
+            Intent myintent3 = new Intent(MainActivity.this, Account_managment.class);
+            startActivity(myintent3);
+        } else if (id == R.id.home) {
+            Intent myintent4 = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(myintent4);
+        }  else if (id == R.id.nav_help) {
+            Intent myintent5 = new Intent(MainActivity.this, Help_Page.class);
+            startActivity(myintent5);
         } else if (id == R.id.nav_About_us) {
-
+            Intent myintent6 = new Intent(MainActivity.this, About_us.class);
+            startActivity(myintent6);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
