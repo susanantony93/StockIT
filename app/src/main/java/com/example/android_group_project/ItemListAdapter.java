@@ -52,7 +52,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemVi
         itemHolder.buttonToDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(ctxItem,view_products.class);
+                Intent intent=new Intent(ctxItem,view_product.class);
                 intent.putExtra("id",item.getId());
                 ctxItem.startActivity(intent);
             }
