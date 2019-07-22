@@ -41,7 +41,7 @@ public class view_product extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         db=StockIt.db;
-        stock_edit_button = findViewById(R.id.editStock);
+        //stock_edit_button = findViewById(R.id.editStock);
         itemname=findViewById(R.id.itemname);
         itemprice=findViewById(R.id.price);
         itemstock  = findViewById(R.id.itemstock);
@@ -90,21 +90,21 @@ public class view_product extends AppCompatActivity
             default:
                 item.setItemImage(R.drawable.ic_launcher_foreground);
         }
-        itemprice.setText("Price: $"+Double.toString(item.getItemPrice()));
+        itemprice.setText(Double.toString(item.getItemPrice()));
         itemname.setText(item.getItemName());
         itemstock.setText(Integer.toString(item.getItemStock()));
-        itemvendor.setText("Vendor Name:"+ (item.getItemDesc()));
+        itemvendor.setText(item.getItemDesc());
         itemimage.setImageResource(item.getItemImage());
 
-        stock_edit_button.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v){
-               // stock_edit.setEnabled(true);
-
-
-            }
-        });
+//        stock_edit_button.setOnClickListener(new View.OnClickListener(){
+//
+//            @Override
+//            public void onClick(View v){
+//               // stock_edit.setEnabled(true);
+//
+//
+//            }
+//        });
     }
 
     @Override
