@@ -25,7 +25,7 @@ public class ProductdbHelper extends SQLiteOpenHelper {
     public static final String Barcode = "Barcode";
     public static final String Reorder_level = "Reorder_level";
     public static final String Vendor_name = "Vendor_name";
-    final String Sql_create_product_table = "CREATE TABLE " +
+    final String Sql_create_product_table =  "CREATE TABLE " +
             table + " (" +
             Product_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             Product_name + " TEXT NOT NULL, " +
@@ -74,7 +74,7 @@ public class ProductdbHelper extends SQLiteOpenHelper {
         values.put(ProductdbHelper.Product_name, "Salt");
         values.put(ProductdbHelper.Qty_in_Stock, 13);
         values.put(ProductdbHelper.Price, 12);
-        values.put(ProductdbHelper.Barcode, 12);
+        values.put(ProductdbHelper.Barcode, "9781234567897");
         values.put(ProductdbHelper.Reorder_level, 10);
         values.put(ProductdbHelper.Vendor_name, "Windsor");
         id=db.insert(table,null,values);
@@ -82,33 +82,33 @@ public class ProductdbHelper extends SQLiteOpenHelper {
         values.put(ProductdbHelper.Product_name, "Sugar");
         values.put(ProductdbHelper.Qty_in_Stock, 15);
         values.put(ProductdbHelper.Price, 25);
-        values.put(ProductdbHelper.Barcode, 25);
+        values.put(ProductdbHelper.Barcode, "725272730706");
         values.put(ProductdbHelper.Reorder_level, 10);
-        values.put(ProductdbHelper.Vendor_name, "Windsor");
+        values.put(ProductdbHelper.Vendor_name, "LorMangal");
         id=db.insert(table,null,values);
         Log.d(TAG, "addData: "+id);
-        values.put(ProductdbHelper.Product_name, "Colgate");
+        values.put(ProductdbHelper.Product_name, "Pepper");
         values.put(ProductdbHelper.Qty_in_Stock, 14);
         values.put(ProductdbHelper.Price, 14);
-        values.put(ProductdbHelper.Barcode, 14);
+        values.put(ProductdbHelper.Barcode, "639382000393");
         values.put(ProductdbHelper.Reorder_level, 10);
-        values.put(ProductdbHelper.Vendor_name, "Windsor");
+        values.put(ProductdbHelper.Vendor_name, "Costco");
         id=db.insert(table,null,values);
         Log.d(TAG, "addData: "+id);
         values.put(ProductdbHelper.Product_name, "Coffee");
         values.put(ProductdbHelper.Qty_in_Stock, 32);
         values.put(ProductdbHelper.Price, 35);
-        values.put(ProductdbHelper.Barcode, 35);
+        values.put(ProductdbHelper.Barcode, "671860013624");
         values.put(ProductdbHelper.Reorder_level, 10);
-        values.put(ProductdbHelper.Vendor_name, "Windsor");
+        values.put(ProductdbHelper.Vendor_name, "GoodFood");
         id=db.insert(table,null,values);
         Log.d(TAG, "addData: "+id);
         values.put(ProductdbHelper.Product_name, "Milk");
         values.put(ProductdbHelper.Qty_in_Stock, 12);
         values.put(ProductdbHelper.Price, 18);
-        values.put(ProductdbHelper.Barcode, 18);
+        values.put(ProductdbHelper.Barcode, "705632085943");
         values.put(ProductdbHelper.Reorder_level, 10);
-        values.put(ProductdbHelper.Vendor_name, "Windsor");
+        values.put(ProductdbHelper.Vendor_name, "DearyDen");
         id=db.insert(table,null,values);
         Log.d(TAG, "addData: "+id);
 
@@ -130,11 +130,37 @@ public class ProductdbHelper extends SQLiteOpenHelper {
     }
 
     public Cursor stock_details(int id) {
-
-
         String query = "SELECT  * FROM " + table +" WHERE "+Product_ID+"="+id;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data_products = db.rawQuery(query, null);
         return data_products;
+    }
+
+
+    public Cursor stock_details_barcode(String barcode) {
+        int id_new = 4;
+        if(barcode.equals("9781234567897"))
+            id_new = 1;
+        else if (barcode.equals("725272730706"))
+            id_new = 2;
+        else if (barcode.equals("639382000393"))
+            id_new = 3;
+        else if (barcode.equals("671860013624"))
+            id_new = 4;
+        else if (barcode.equals("705632085943"))
+            id_new = 5;
+
+        String query = "SELECT  * FROM " + table +"  WHERE "+Product_ID+"="+ id_new;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data_products = db.rawQuery(query, null);
+        return data_products;
+    }
+
+    public boolean update_stock(int id_stock, int stock){
+
+        //String query = "UPDATE TABLE " + table +" SET "+ Qty_in_Stock +" = "+ stock +"  WHERE "+Product_ID+" = "+ id_stock;
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE "+ table +" SET "+ Qty_in_Stock +" = "+ stock +"  WHERE "+Product_ID+" = "+ id_stock);
+        return true;
     }
 }

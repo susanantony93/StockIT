@@ -99,8 +99,8 @@ public class MainActivity extends AppCompatActivity
             item.setId( product_data.getInt(0));
             item.setItemName(product_data.getString(1));
             item.setItemDesc( product_data.getString(6));
-            item.setItemPrice(product_data.getInt(2));
-            item.setItemStock(product_data.getInt(3));
+            item.setItemPrice(product_data.getInt(3));
+            item.setItemStock(product_data.getInt(2));
             switch (item.getItemName()){
                 case "Salt":
                     item.setItemImage(R.drawable.salt);
@@ -111,8 +111,8 @@ public class MainActivity extends AppCompatActivity
                 case "Milk":
                     item.setItemImage(R.drawable.milk);
                     break;
-                case "Colgate":
-                    item.setItemImage(R.drawable.colgate);
+                case "Pepper":
+                    item.setItemImage(R.drawable.pepper);
                     break;
                 case "Coffee":
                     item.setItemImage(R.drawable.coffee);
