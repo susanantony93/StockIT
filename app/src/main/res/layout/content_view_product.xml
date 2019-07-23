@@ -36,9 +36,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="4"
+                        android:fontFamily="@font/allerta"
                         android:padding="10dp"
                         android:text="Salt"
                         android:textAlignment="center"
+                        android:textColor="#565656"
                         android:textSize="40dp" />
 
                     <ImageView
@@ -73,6 +75,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="20dp"
+                        android:textColor="#565656"
                         android:text="In Stock :"
                         android:textSize="15dp" />
 
@@ -81,9 +84,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2dp"
+                        android:padding="20dp"
                         android:layout_weight="1"
-                        android:cursorVisible="false"
-                        android:editable="false"
+                        android:cursorVisible="true"
                         android:inputType="number"
                         android:text="45"
                         android:textAlignment="textEnd"
@@ -117,6 +120,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:padding="20dp"
+                            android:textColor="#565656"
                             android:text="Item Price : "
                             android:textSize="15dp" />
 
@@ -155,6 +159,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="20dp"
+                        android:textColor="#565656"
                         android:text="Vendor : "
                         android:textSize="15dp" />
 
@@ -192,8 +197,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="20dp"
+                        android:textColor="#565656"
                         android:text="Barcode : "
-                        android:textSize="20sp" />
+                        android:textSize="15dp" />
 
                     <TextView
                         android:id="@+id/barcodeno"
@@ -210,6 +216,10 @@
 
             </android.support.v7.widget.CardView>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/button5"
