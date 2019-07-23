@@ -1,10 +1,11 @@
 package com.example.android_group_project;
 
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
@@ -15,11 +16,13 @@ import android.support.v4.widget.DrawerLayout;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.jar.Manifest;
 
 public class view_product extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,9 +33,11 @@ public class view_product extends AppCompatActivity
     private TextView itemname,itemprice,itemvendor;
     private EditText itemstock;
     private ImageView itemimage;
-    private Button stock_edit_button;
+    private Button stock_save_button;
+    int id_update = 0;
     ProductdbHelper db;
     Cursor cursor;
+    ItemList item = new ItemList();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,20 +45,69 @@ public class view_product extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         db=StockIt.db;
-        stock_edit_button = findViewById(R.id.editStock);
-        itemname=findViewById(R.id.itemname);
-        itemprice=findViewById(R.id.price);
+        stock_save_button = findViewById(R.id.save_button);
+        itemname =findViewById(R.id.itemname);
+        itemprice =findViewById(R.id.price);
         itemstock  = findViewById(R.id.itemstock);
         itemvendor  = findViewById(R.id.description);
         itemimage = findViewById(R.id.itemImage);
         Intent data=getIntent();
+
+
         int id=data.getIntExtra("id",-1);
         Log.d(TAG, "onCreate: id"+id);
-        if(id!=-1)
-            cursor=db.stock_details(id);
-        cursor.moveToFirst();
-        ItemList item = new ItemList();
+
+        String scan_result = data.getStringExtra("barcodeResult");
+        Toast.makeText(getApplicationContext()," scan_result " + scan_result ,Toast.LENGTH_LONG).show();
+        if (id != ' ') {
+            if (id != -1)
+                cursor = db.stock_details(id);
+            else if(scan_result != null) {
+                Log.i("Code", scan_result);
+                cursor = db.stock_details_barcode(scan_result);
+            }
+
+            cursor.moveToFirst();
+            item.setId( cursor.getInt(0));
+            id_update =id;
+            item.setItemName(cursor.getString(1));
+            item.setItemDesc( cursor.getString(6));
+            item.setItemPrice(cursor.getInt(3));
+            item.setItemStock(cursor.getInt(2));
+            switch (item.getItemName()){
+                case "Salt":
+                    item.setItemImage(R.drawable.salt);
+                    break;
+                case "Sugar":
+                    item.setItemImage(R.drawable.sugar);
+                    break;
+                case "Milk":
+                    item.setItemImage(R.drawable.milk);
+                    break;
+                case "Pepper":
+                    item.setItemImage(R.drawable.pepper);
+                    break;
+                case "Coffee":
+                    item.setItemImage(R.drawable.coffee);
+                    break;
+                default:
+                    item.setItemImage(R.drawable.ic_launcher_foreground);
+            }
+            itemprice.setText(Double.toString(item.getItemPrice()));
+            itemname.setText(item.getItemName());
+            itemstock.setText(Integer.toString(item.getItemStock()));
+            itemvendor.setText((item.getItemDesc()));
+            itemimage.setImageResource(item.getItemImage());
+
+        }
+
+
+        else{
+            Log.i("Code",scan_result);
+        }
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -64,44 +118,40 @@ public class view_product extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        final DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Yes button clicked
+                        Toast.makeText(getApplicationContext(),"yes clicked " ,Toast.LENGTH_LONG).show();
 
+                        db.update_stock( id_update , Integer.parseInt(itemstock.getText().toString()));
 
-        item.setId( cursor.getInt(0));
-        item.setItemName(cursor.getString(1));
-        item.setItemDesc( cursor.getString(6));
-        item.setItemPrice(cursor.getInt(2));
-        item.setItemStock(cursor.getInt(3));
-        switch (item.getItemName()){
-            case "Salt":
-                item.setItemImage(R.drawable.salt);
-                break;
-            case "Sugar":
-                item.setItemImage(R.drawable.sugar);
-                break;
-            case "Milk":
-                item.setItemImage(R.drawable.milk);
-                break;
-            case "Colgate":
-                item.setItemImage(R.drawable.colgate);
-                break;
-            case "Coffee":
-                item.setItemImage(R.drawable.coffee);
-                break;
-            default:
-                item.setItemImage(R.drawable.ic_launcher_foreground);
-        }
-        itemprice.setText("Price: $"+Double.toString(item.getItemPrice()));
-        itemname.setText(item.getItemName());
-        itemstock.setText(Integer.toString(item.getItemStock()));
-        itemvendor.setText("Vendor Name:"+ (item.getItemDesc()));
-        itemimage.setImageResource(item.getItemImage());
+                        if(Integer.parseInt(itemstock.getText().toString()) <= 10){
+                            Toast.makeText(getApplicationContext()," Stock for " + item.getItemName() + " is less then reorder level",Toast.LENGTH_LONG).show();
+                        }
+                        Intent home = new Intent(view_product.this , MainActivity.class);
+                        startActivity(home);
 
-        stock_edit_button.setOnClickListener(new View.OnClickListener(){
+                        break;
 
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        Toast.makeText(getApplicationContext(),"edit has canceled" ,Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        };
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        stock_save_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                // stock_edit.setEnabled(true);
-
+                builder.setMessage("Do you want to save stock?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
 
             }
         });

@@ -17,13 +17,19 @@
 
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="60dp">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerViewforItems"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:scrollbarDefaultDelayBeforeFade="0"
+            android:scrollbarFadeDuration="0"
+            android:scrollbarSize="0dp"
+            android:scrollbarTrackVertical="@null" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

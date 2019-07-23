@@ -99,7 +99,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@id/imageView"
-                android:text="View Item or stock manage"/>
+                android:text="View Item or Manage stock"/>
 
         </RelativeLayout>
 
