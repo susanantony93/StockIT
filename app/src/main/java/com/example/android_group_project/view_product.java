@@ -47,9 +47,9 @@ public class view_product extends AppCompatActivity
 
 
         db=StockIt.db;
-        stock_save_button = findViewById(R.id.save_button);
-        itemname =findViewById(R.id.itemname);
-        itemprice =findViewById(R.id.price);
+        //stock_edit_button = findViewById(R.id.editStock);
+        itemname=findViewById(R.id.itemname);
+        itemprice=findViewById(R.id.price);
         itemstock  = findViewById(R.id.itemstock);
         itemvendor  = findViewById(R.id.description);
         itemimage = findViewById(R.id.itemImage);
@@ -146,15 +146,45 @@ public class view_product extends AppCompatActivity
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        stock_save_button.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-               // stock_edit.setEnabled(true);
-                builder.setMessage("Do you want to save stock?").setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
+        item.setId( cursor.getInt(0));
+        item.setItemName(cursor.getString(1));
+        item.setItemDesc( cursor.getString(6));
+        item.setItemPrice(cursor.getInt(2));
+        item.setItemStock(cursor.getInt(3));
+        switch (item.getItemName()){
+            case "Salt":
+                item.setItemImage(R.drawable.salt);
+                break;
+            case "Sugar":
+                item.setItemImage(R.drawable.sugar);
+                break;
+            case "Milk":
+                item.setItemImage(R.drawable.milk);
+                break;
+            case "Colgate":
+                item.setItemImage(R.drawable.colgate);
+                break;
+            case "Coffee":
+                item.setItemImage(R.drawable.coffee);
+                break;
+            default:
+                item.setItemImage(R.drawable.ic_launcher_foreground);
+        }
+        itemprice.setText(Double.toString(item.getItemPrice()));
+        itemname.setText(item.getItemName());
+        itemstock.setText(Integer.toString(item.getItemStock()));
+        itemvendor.setText(item.getItemDesc());
+        itemimage.setImageResource(item.getItemImage());
 
-            }
-        });
+//        stock_edit_button.setOnClickListener(new View.OnClickListener(){
+//
+//            @Override
+//            public void onClick(View v){
+//               // stock_edit.setEnabled(true);
+//
+//
+//            }
+//        });
     }
 
     @Override
