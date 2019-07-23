@@ -129,8 +129,17 @@ public class ProductdbHelper extends SQLiteOpenHelper {
         return data_products;
     }
 
+
+
     public Cursor stock_details(int id) {
         String query = "SELECT  * FROM " + table +" WHERE "+Product_ID+"="+id;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data_products = db.rawQuery(query, null);
+        return data_products;
+    }
+
+    public Cursor stock_details_alert() {
+        String query = "SELECT  * FROM " + table +" WHERE "+Qty_in_Stock+"< '10'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data_products = db.rawQuery(query, null);
         return data_products;
@@ -163,4 +172,5 @@ public class ProductdbHelper extends SQLiteOpenHelper {
         db.execSQL("UPDATE "+ table +" SET "+ Qty_in_Stock +" = "+ stock +"  WHERE "+Product_ID+" = "+ id_stock);
         return true;
     }
+
 }

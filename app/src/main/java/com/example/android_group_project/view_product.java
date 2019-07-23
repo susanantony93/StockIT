@@ -118,9 +118,6 @@ public class view_product extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
-
-
         final DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -132,7 +129,7 @@ public class view_product extends AppCompatActivity
                         db.update_stock( id_update , Integer.parseInt(itemstock.getText().toString()));
 
                         if(Integer.parseInt(itemstock.getText().toString()) <= 10){
-                            Toast.makeText(getApplicationContext()," Stock for " + item.getItemName() + "is less then reorder level",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext()," Stock for " + item.getItemName() + " is less then reorder level",Toast.LENGTH_LONG).show();
                         }
                         Intent home = new Intent(view_product.this , MainActivity.class);
                         startActivity(home);
@@ -155,7 +152,6 @@ public class view_product extends AppCompatActivity
                // stock_edit.setEnabled(true);
                 builder.setMessage("Do you want to save stock?").setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener).show();
-                //instantiate the popup.xml layout file
 
             }
         });

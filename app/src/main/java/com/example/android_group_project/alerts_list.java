@@ -2,12 +2,14 @@ package com.example.android_group_project;
 
 import android.Manifest;
 import android.content.Intent;
+import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,22 +19,35 @@ import android.support.v4.widget.DrawerLayout;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class alerts_list extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG = "ktr";
     Button send_sms;
     Button open_dialer;
     private GPSTracker GPSTracker;
     double longitude;
     double latitude;
-    String[] PERMISSIONS = {Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.RECEIVE_SMS, Manifest.permission.CAMERA};
+    TextView textdemo;
+    ProductdbHelper db;
+    Cursor cursor;
+    ItemList item = new ItemList();
+    ListView lvproducts;
+    ArrayList<String> products = new ArrayList();
+    ArrayAdapter<String> adapter;
+
+    //https://github.com/Oclemy/pwizards/blob/master/DBListView/src/com/tutorials/dbgridview/MainActivity.java
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +58,8 @@ public class alerts_list extends AppCompatActivity
         FloatingActionButton fab = findViewById(R.id.fab);
         send_sms = findViewById(R.id.send_sms);
         open_dialer = findViewById(R.id.open_dialer);
+        textdemo = findViewById(R.id.demoText);
+        lvproducts = findViewById(R.id.lvproducts);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -51,6 +68,31 @@ public class alerts_list extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        adapter=new ArrayAdapter<String>(this,android.R.layout.simple_selectable_list_item,products);
+        db=StockIt.db;
+
+        try {
+            cursor = db.stock_details_alert();
+
+            while(cursor.moveToNext())
+            {
+                String name=cursor.getString(1);
+                products.add(name);
+            }
+            lvproducts.setAdapter(adapter);
+
+            if(products.size() <= 0){
+                textdemo.setText("Stock looks good");
+            }
+
+
+
+            Log.d(TAG, "onCreate: id"+ item.getItemName());
+
+        }catch (Exception e){
+
+        }
 
         send_sms.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,23 +116,26 @@ public class alerts_list extends AppCompatActivity
                         e.printStackTrace();
                     }
 
-//                    String address = addresses.get(0).getAddressLine(0);
-//                    String city = addresses.get(0).getLocality();
-//                    String state = addresses.get(0).getAdminArea();
-//                    String country = addresses.get(0).getCountryName();
-//                    String postalCode = addresses.get(0).getPostalCode();
-//                    String knownName = addresses.get(0).getFeatureName();
+                    String add = addresses.get(0).getAddressLine(0);
 
+                    String product = " ";
 
-                    String add = "My current location is - " + addresses.get(0).getAddressLine(0);
+                    if(products.size() > 0) {
+                        for (int i = 0; i < products.size(); i++) {
+                            product = product + " , "+ products.get(i)  ;
+                        }
+                        product = product + " are items to be order.";
+                    }
+                    else
+                        product = "No items to be order, stock is good. ";
 
-                    String msg = "This is my current location " + add;
-
-
+                    String msg = "This is the branch/shop location " + add + " Also " + product;
 
                     SmsManager.getDefault().sendTextMessage("9028170568",
                             null, msg,
                             null, null);
+                    Toast.makeText(getApplicationContext(),"Message is send " ,Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "onCreate: id ,,,,,,,,,  "+ msg);
                 }
 
             }
