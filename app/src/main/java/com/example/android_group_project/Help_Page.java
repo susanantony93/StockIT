@@ -56,9 +56,6 @@ public class Help_Page extends AppCompatActivity
         if (id == R.id.nav_alerts) {
             Intent myintent1 = new Intent(Help_Page.this, alerts_list.class);
             startActivity(myintent1);
-        } else if (id == R.id.nav_settings) {
-            Intent myintent2 = new Intent(Help_Page.this, Settings.class);
-            startActivity(myintent2);
         } else if (id == R.id.nav_account) {
             Intent myintent3 = new Intent(Help_Page.this, Account_managment.class);
             startActivity(myintent3);

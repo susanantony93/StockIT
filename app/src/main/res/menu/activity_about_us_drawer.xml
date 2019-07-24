@@ -15,10 +15,6 @@
             android:icon="@drawable/ic_menu_alert"
             android:title="@string/menu_alerts" />
 
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/menu_settings" />
 
 
         <item

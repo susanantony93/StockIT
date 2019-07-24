@@ -1,7 +1,9 @@
 package com.example.android_group_project;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
@@ -94,6 +96,14 @@ public class alerts_list extends AppCompatActivity
 
         }
 
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("Contact", Context.MODE_PRIVATE);
+        final String phonenumber = sharedPref.getString("contact",null);
+        if(phonenumber == null) {
+            Intent myintent = new Intent(alerts_list.this , Account_managment.class);
+            startActivity(myintent);
+        }
+
+        Log.d(TAG, phonenumber);
         send_sms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +126,13 @@ public class alerts_list extends AppCompatActivity
                         e.printStackTrace();
                     }
 
-                    String add = addresses.get(0).getAddressLine(0);
+                    String add = " ";
+                    if(addresses != null){
+                        add = addresses.get(0).getAddressLine(0);
+                    }else{
+                        Toast.makeText(getApplicationContext(),"Please turn on your device location and Internet/Wifi connection " ,Toast.LENGTH_LONG).show();
+                    }
+
 
                     String product = " ";
 
@@ -131,7 +147,10 @@ public class alerts_list extends AppCompatActivity
 
                     String msg = "This is the branch/shop location " + add + " Also " + product;
 
-                    SmsManager.getDefault().sendTextMessage("9028170568",
+                    Log.d(TAG, phonenumber);
+
+
+                    SmsManager.getDefault().sendTextMessage("+1"+phonenumber,
                             null, msg,
                             null, null);
                     Toast.makeText(getApplicationContext(),"Message is send " ,Toast.LENGTH_LONG).show();
@@ -141,11 +160,13 @@ public class alerts_list extends AppCompatActivity
             }
         });
 
+
+        final String diler = "+1" + phonenumber;
         open_dialer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                callIntent.setData(Uri.parse("tel: +19028170568"));
+                callIntent.setData(Uri.parse("tel: "+diler));
                 startActivity(callIntent);
 
             }
@@ -197,9 +218,6 @@ public class alerts_list extends AppCompatActivity
         if (id == R.id.nav_alerts) {
             Intent myintent1 = new Intent(alerts_list.this, alerts_list.class);
             startActivity(myintent1);
-        } else if (id == R.id.nav_settings) {
-            Intent myintent2 = new Intent(alerts_list.this, Settings.class);
-            startActivity(myintent2);
         } else if (id == R.id.nav_account) {
             Intent myintent3 = new Intent(alerts_list.this, Account_managment.class);
             startActivity(myintent3);

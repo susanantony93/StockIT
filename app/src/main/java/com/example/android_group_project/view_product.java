@@ -126,14 +126,22 @@ public class view_product extends AppCompatActivity
                         //Yes button clicked
                         Toast.makeText(getApplicationContext(),"yes clicked " ,Toast.LENGTH_LONG).show();
 
-                        db.update_stock( id_update , Integer.parseInt(itemstock.getText().toString()));
+                        if(!itemstock.getText().toString().equals("")){
+                            db.update_stock( id_update , Integer.parseInt(itemstock.getText().toString()));
+                        }else{
+                            Toast.makeText(getApplicationContext()," Please enter stock value ",Toast.LENGTH_LONG).show();
 
-                        if(Integer.parseInt(itemstock.getText().toString()) <= 10){
-                            Toast.makeText(getApplicationContext()," Stock for " + item.getItemName() + " is less then reorder level",Toast.LENGTH_LONG).show();
+                        }
+
+                        if(!itemstock.getText().toString().equals("")) {
+                            if (Integer.parseInt(itemstock.getText().toString()) <= 10) {
+                                Toast.makeText(getApplicationContext(), " Stock for " + item.getItemName() + " is less then reorder level", Toast.LENGTH_LONG).show();
+                            }
+                        }else{
+                            Toast.makeText(getApplicationContext()," Please enter stock value ",Toast.LENGTH_LONG).show();
                         }
                         Intent home = new Intent(view_product.this , MainActivity.class);
                         startActivity(home);
-
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -146,45 +154,15 @@ public class view_product extends AppCompatActivity
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        item.setId( cursor.getInt(0));
-        item.setItemName(cursor.getString(1));
-        item.setItemDesc( cursor.getString(6));
-        item.setItemPrice(cursor.getInt(2));
-        item.setItemStock(cursor.getInt(3));
-        switch (item.getItemName()){
-            case "Salt":
-                item.setItemImage(R.drawable.salt);
-                break;
-            case "Sugar":
-                item.setItemImage(R.drawable.sugar);
-                break;
-            case "Milk":
-                item.setItemImage(R.drawable.milk);
-                break;
-            case "Pepper":
-                item.setItemImage(R.drawable.pepper);
-                break;
-            case "Coffee":
-                item.setItemImage(R.drawable.coffee);
-                break;
-            default:
-                item.setItemImage(R.drawable.ic_launcher_foreground);
-        }
-        itemprice.setText(Double.toString(item.getItemPrice()));
-        itemname.setText(item.getItemName());
-        itemstock.setText(Integer.toString(item.getItemStock()));
-        itemvendor.setText(item.getItemDesc());
-        itemimage.setImageResource(item.getItemImage());
+        stock_save_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                // stock_edit.setEnabled(true);
+                builder.setMessage("Do you want to save stock?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
 
-//        stock_edit_button.setOnClickListener(new View.OnClickListener(){
-//
-//            @Override
-//            public void onClick(View v){
-//               // stock_edit.setEnabled(true);
-//
-//
-//            }
-//        });
+            }
+        });
     }
 
     @Override
@@ -209,9 +187,6 @@ public class view_product extends AppCompatActivity
         if (id == R.id.nav_alerts) {
             Intent myintent1 = new Intent(view_product.this, alerts_list.class);
             startActivity(myintent1);
-        } else if (id == R.id.nav_settings) {
-            Intent myintent2 = new Intent(view_product.this, Settings.class);
-            startActivity(myintent2);
         } else if (id == R.id.nav_account) {
             Intent myintent3 = new Intent(view_product.this, Account_managment.class);
             startActivity(myintent3);

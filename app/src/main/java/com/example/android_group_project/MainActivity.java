@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity
 
 
     String[] PERMISSIONS = {Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE, Manifest.permission.LOCATION_HARDWARE, Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.RECEIVE_SMS, Manifest.permission.CAMERA, Manifest.permission.INTERNET, Manifest.permission.CALL_PHONE};
+            Manifest.permission.RECEIVE_SMS, Manifest.permission.CAMERA, Manifest.permission.INTERNET, Manifest.permission.CALL_PHONE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,9 +205,6 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_alerts) {
             Intent myintent1 = new Intent(MainActivity.this, alerts_list.class);
             startActivity(myintent1);
-        } else if (id == R.id.nav_settings) {
-            Intent myintent2 = new Intent(MainActivity.this, Settings.class);
-            startActivity(myintent2);
         } else if (id == R.id.nav_account) {
             Intent myintent3 = new Intent(MainActivity.this, Account_managment.class);
             startActivity(myintent3);
