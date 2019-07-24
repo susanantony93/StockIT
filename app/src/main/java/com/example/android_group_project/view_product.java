@@ -161,8 +161,8 @@ public class view_product extends AppCompatActivity
             case "Milk":
                 item.setItemImage(R.drawable.milk);
                 break;
-            case "Colgate":
-                item.setItemImage(R.drawable.colgate);
+            case "Pepper":
+                item.setItemImage(R.drawable.pepper);
                 break;
             case "Coffee":
                 item.setItemImage(R.drawable.coffee);
