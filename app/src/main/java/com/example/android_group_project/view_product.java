@@ -47,9 +47,9 @@ public class view_product extends AppCompatActivity
 
 
         db=StockIt.db;
-        //stock_edit_button = findViewById(R.id.editStock);
-        itemname=findViewById(R.id.itemname);
-        itemprice=findViewById(R.id.price);
+        stock_save_button = findViewById(R.id.save_btn);
+        itemname =findViewById(R.id.itemname);
+        itemprice =findViewById(R.id.price);
         itemstock  = findViewById(R.id.itemstock);
         itemvendor  = findViewById(R.id.description);
         itemimage = findViewById(R.id.itemImage);
@@ -60,7 +60,7 @@ public class view_product extends AppCompatActivity
         Log.d(TAG, "onCreate: id"+id);
 
         String scan_result = data.getStringExtra("barcodeResult");
-        Toast.makeText(getApplicationContext()," scan_result " + scan_result ,Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext()," scan_result " + scan_result ,Toast.LENGTH_LONG).show();
         if (id != ' ') {
             if (id != -1)
                 cursor = db.stock_details(id);
