@@ -158,14 +158,21 @@ public class alerts_list extends AppCompatActivity
                     // taking all the items name from list that need to be reorder.
                     if(products.size() > 0) {
                         for (int i = 0; i < products.size(); i++) {
-                            product = product + " , "+ products.get(i)  ;
+                            if(i!=0){
+                                product = product + " , "+ products.get(i)  ;
+                            }
+                            else
+                            {
+                                product = product + products.get(i)  ;
+                            }
+
                         }
-                        product = product + " are items to be order.";
+                        product = product ;
                     }
                     else
                         product = "No items to be order, stock is good. ";
 
-                    String msg = "This is the branch/shop location " + add + " Also " + product;
+                    String msg = "Branch Name - Spring Garden Rd\nLocation - " + add + "\nItems need to be reordered -" + product;
 
                     Log.d(TAG, phonenumber);
 

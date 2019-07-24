@@ -19,14 +19,14 @@
     <string name="send_sms">Send SMS</string>
     <string name="open_dialer">Open Dialer</string>
 
-    <string name="menu_alerts">Alerts</string>
+    <string name="menu_alerts">Reorder Products</string>
     <string name="menu_Bluetooth">Home</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_account">Account</string>
     <string name="menu_help">Help</string>
-    <string name="menu_aboutUs">About us</string>
-    <string name="title_activity_barcode_search">Barcode_search</string>
-    <string name="title_activity_view_product">view_product</string>
+    <string name="menu_aboutUs">Contact us</string>
+    <string name="title_activity_barcode_search">Barcode Search</string>
+    <string name="title_activity_view_product">Product Details</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
@@ -34,10 +34,10 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
-    <string name="title_activity_alerts_list">alerts_list</string>
+    <string name="title_activity_alerts_list">Reorder Products</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_account_managment">Account_managment</string>
-    <string name="title_activity_help__page">Help_Page</string>
-    <string name="title_activity_about_us">About_us</string>
+    <string name="title_activity_account_managment">Account Managment</string>
+    <string name="title_activity_help__page">Help</string>
+    <string name="title_activity_about_us">Contact Us</string>
 
 </resources>

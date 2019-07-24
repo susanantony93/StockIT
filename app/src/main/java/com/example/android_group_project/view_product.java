@@ -1,6 +1,6 @@
 package com.example.android_group_project;
 
-
+//https://codinginflow.com/tutorials/android/sqlite-recyclerview/part-1-layouts-contract-sqliteopenhelper
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -104,7 +104,7 @@ public class view_product extends AppCompatActivity
                 default:
                     item.setItemImage(R.drawable.ic_launcher_foreground);
             }
-            itemprice.setText(Double.toString(item.getItemPrice()));
+            itemprice.setText("$ " + Double.toString(item.getItemPrice()));
             itemname.setText(item.getItemName());
             itemstock.setText(Integer.toString(item.getItemStock()));
             itemvendor.setText((item.getItemDesc()));

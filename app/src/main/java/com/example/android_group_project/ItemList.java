@@ -1,7 +1,8 @@
 package com.example.android_group_project;
 
 
-
+//https://www.youtube.com/watch?v=a4o9zFfyIM4
+//https://medium.com/@ssaurel/learn-to-save-data-with-sqlite-on-android-b11a8f7718d3
 public class ItemList {
     private int id;
     private String itemName;
