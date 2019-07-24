@@ -1,5 +1,6 @@
 package com.example.android_group_project;
-
+//https://www.youtube.com/watch?v=a4o9zFfyIM4
+//https://medium.com/@ssaurel/learn-to-save-data-with-sqlite-on-android-b11a8f7718d3
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity
     public ProductdbHelper db;
     Button view_product;
 
+    // list of all the permission that is require for different features to run
 
     String[] PERMISSIONS = {Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE, Manifest.permission.LOCATION_HARDWARE, Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.RECEIVE_SMS, Manifest.permission.CAMERA, Manifest.permission.INTERNET, Manifest.permission.CALL_PHONE};
@@ -46,10 +48,12 @@ public class MainActivity extends AppCompatActivity
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("Products List");
         db = new ProductdbHelper(this);
         FloatingActionButton fab = findViewById(R.id.fab);
 
         //http://mobiledevhub.com/2017/11/15/android-fundamentals-requesting-multiple-runtime-permissions/
+        // calling method to ask for all permissions
         requestMultiplePermissions();
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -70,20 +74,16 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        //getting the recyclerview from xml
 
-
-        //initializing the productlist
-
-
+        // database object to fetch all data of products.
         db = StockIt.db;
 
         itemList = new ArrayList<>();
         Cursor product_data = db.stock_details();
 
+        // this loop will fill recycler view with all the values stored in database
         while (product_data.moveToNext()) {
             ItemList item = new ItemList();
-
 
             item.setId( product_data.getInt(0));
             item.setItemName(product_data.getString(1));
@@ -131,28 +131,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
+    //  this method will ask for all permissions
     private void requestMultiplePermissions(){
         List<String> remainingPermissions = new ArrayList<>();
         for (String permission : PERMISSIONS) {
@@ -162,6 +141,8 @@ public class MainActivity extends AppCompatActivity
         }
         requestPermissions(remainingPermissions.toArray(new String[remainingPermissions.size()]), 101);
     }
+
+        // this method will be executed after all the permission is granted
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,@NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == 101){
@@ -188,6 +169,7 @@ public class MainActivity extends AppCompatActivity
             //all is good, continue flow
         }
     }
+    // method to display pop up box of permission request
     public void displayAlertMessage(String message, DialogInterface.OnClickListener listener){
         new AlertDialog.Builder(MainActivity.this)
                 .setMessage(message)
@@ -197,6 +179,7 @@ public class MainActivity extends AppCompatActivity
                 .show();
     }
     @SuppressWarnings("StatementWithEmptyBody")
+    // these are all the navigation bar icons that redirect to their relative activities.
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         // Handle navigation view item clicks here.

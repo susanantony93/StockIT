@@ -1,5 +1,6 @@
 package com.example.android_group_project;
-
+//https://codinginflow.com/tutorials/android/sqlite-recyclerview/part-1-layouts-contract-sqliteopenhelper
+//https://medium.com/@ssaurel/learn-to-save-data-with-sqlite-on-android-b11a8f7718d3
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -112,16 +113,10 @@ public class ProductdbHelper extends SQLiteOpenHelper {
         id=db.insert(table,null,values);
         Log.d(TAG, "addData: "+id);
 
-
-
-
-
-// Insert the new row, returning the primary key value of the new row
-
     }
 
+    // method to fetch all stock details
     public Cursor stock_details() {
-
 
         String query = "SELECT  * FROM " + table;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -129,8 +124,7 @@ public class ProductdbHelper extends SQLiteOpenHelper {
         return data_products;
     }
 
-
-
+    // method to find product details of given product ID
     public Cursor stock_details(int id) {
         String query = "SELECT  * FROM " + table +" WHERE "+Product_ID+"="+id;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -138,6 +132,7 @@ public class ProductdbHelper extends SQLiteOpenHelper {
         return data_products;
     }
 
+    // method to find product list with stock less then reorder level
     public Cursor stock_details_alert() {
         String query = "SELECT  * FROM " + table +" WHERE "+Qty_in_Stock+"< '10'";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -145,6 +140,7 @@ public class ProductdbHelper extends SQLiteOpenHelper {
         return data_products;
     }
 
+    // method to find product details with barcode id
 
     public Cursor stock_details_barcode(String barcode) {
         int id_new = 4;
@@ -165,6 +161,7 @@ public class ProductdbHelper extends SQLiteOpenHelper {
         return data_products;
     }
 
+    // method to update stock details
     public boolean update_stock(int id_stock, int stock){
 
         //String query = "UPDATE TABLE " + table +" SET "+ Qty_in_Stock +" = "+ stock +"  WHERE "+Product_ID+" = "+ id_stock;

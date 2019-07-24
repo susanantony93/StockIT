@@ -206,7 +206,7 @@
                         android:textSize="15dp" />
 
                     <TextView
-                        android:id="@+id/barcodeno"
+                        android:id="@+id/barcode_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2dp"

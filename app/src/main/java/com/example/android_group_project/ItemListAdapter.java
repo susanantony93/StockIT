@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 
+//https://www.youtube.com/watch?v=a4o9zFfyIM4
 
 public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemViewHold> {
 
@@ -47,6 +48,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemVi
         itemHolder.descTextView.setText(item.getItemDesc());
         itemHolder.ratingTextView.setText(String.valueOf(item.getItemStock()));
         itemHolder.priceTextView.setText(String.valueOf(item.getItemPrice()));
+//        itemHolder.barcodeTextView.setText(String.valueOf(item.getItemBarcode()));
 
         itemHolder.itemImageView.setImageDrawable(ctxItem.getResources().getDrawable(item.getItemImage()));
         itemHolder.buttonToDetail.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +71,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemVi
 
     class ItemViewHold extends RecyclerView.ViewHolder {
 
-        TextView nameTextView, descTextView, ratingTextView, priceTextView;
+        TextView nameTextView, descTextView, ratingTextView, priceTextView, barcodeTextView;
         ImageView itemImageView;
         Button buttonToDetail;
 
@@ -80,6 +82,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemVi
             descTextView = itemView.findViewById(R.id.itemDescTextView);
             ratingTextView = itemView.findViewById(R.id.itemRatingTextView);
             priceTextView = itemView.findViewById(R.id.itemPriceTextView);
+//            barcodeTextView = itemView.findViewById(R.id.);
             itemImageView = itemView.findViewById(R.id.imageView);
             buttonToDetail=itemView.findViewById(R.id.viewItem);
         }

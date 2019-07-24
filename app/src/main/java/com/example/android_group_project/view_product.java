@@ -1,6 +1,6 @@
 package com.example.android_group_project;
 
-
+//https://codinginflow.com/tutorials/android/sqlite-recyclerview/part-1-layouts-contract-sqliteopenhelper
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -22,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.jar.Manifest;
+
 
 public class view_product extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,7 +30,7 @@ public class view_product extends AppCompatActivity
 
     private static final String TAG = "ktr";
     private EditText stock_edit;
-    private TextView itemname,itemprice,itemvendor;
+    private TextView itemname,itemprice,itemvendor,itembarcode;
     private EditText itemstock;
     private ImageView itemimage;
     private Button stock_save_button;
@@ -44,6 +44,7 @@ public class view_product extends AppCompatActivity
         setContentView(R.layout.activity_view_product);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("Product details");
 
 
         db=StockIt.db;
@@ -53,6 +54,8 @@ public class view_product extends AppCompatActivity
         itemstock  = findViewById(R.id.itemstock);
         itemvendor  = findViewById(R.id.description);
         itemimage = findViewById(R.id.itemImage);
+        itembarcode = findViewById(R.id.barcode_num);
+
         Intent data=getIntent();
 
 
@@ -60,15 +63,20 @@ public class view_product extends AppCompatActivity
         Log.d(TAG, "onCreate: id"+id);
 
         String scan_result = data.getStringExtra("barcodeResult");
-//        Toast.makeText(getApplicationContext()," scan_result " + scan_result ,Toast.LENGTH_LONG).show();
+
+        // this will check id of product that is passed to these page and will fill the details into
+        // form according to it
+        // data of product are fetched from database adapter using cursor.
         if (id != ' ') {
             if (id != -1)
                 cursor = db.stock_details(id);
+            // checking barcode result
             else if(scan_result != null) {
                 Log.i("Code", scan_result);
                 cursor = db.stock_details_barcode(scan_result);
             }
 
+            // filling all the details of product from cursor
             cursor.moveToFirst();
             item.setId( cursor.getInt(0));
             id_update =id;
@@ -76,6 +84,7 @@ public class view_product extends AppCompatActivity
             item.setItemDesc( cursor.getString(6));
             item.setItemPrice(cursor.getInt(3));
             item.setItemStock(cursor.getInt(2));
+            item.setItemBarcode(cursor.getString(4));
             switch (item.getItemName()){
                 case "Salt":
                     item.setItemImage(R.drawable.salt);
@@ -95,12 +104,12 @@ public class view_product extends AppCompatActivity
                 default:
                     item.setItemImage(R.drawable.ic_launcher_foreground);
             }
-            itemprice.setText(Double.toString(item.getItemPrice()));
+            itemprice.setText("$ " + Double.toString(item.getItemPrice()));
             itemname.setText(item.getItemName());
             itemstock.setText(Integer.toString(item.getItemStock()));
             itemvendor.setText((item.getItemDesc()));
             itemimage.setImageResource(item.getItemImage());
-
+            itembarcode.setText(item.getItemBarcode());
         }
 
 
@@ -118,12 +127,14 @@ public class view_product extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        // this is pop window that ask user's permission before updating stock details.
         final DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
                         //Yes button clicked
+                        // if user click yes that it will redirect to home page and details of stock update will be stored in database.
                         Toast.makeText(getApplicationContext(),"yes clicked " ,Toast.LENGTH_LONG).show();
 
                         if(!itemstock.getText().toString().equals("")){
@@ -133,6 +144,7 @@ public class view_product extends AppCompatActivity
 
                         }
 
+                        // if stock is less then reorder level it will show a toast.
                         if(!itemstock.getText().toString().equals("")) {
                             if (Integer.parseInt(itemstock.getText().toString()) <= 10) {
                                 Toast.makeText(getApplicationContext(), " Stock for " + item.getItemName() + " is less then reorder level", Toast.LENGTH_LONG).show();
@@ -152,6 +164,7 @@ public class view_product extends AppCompatActivity
             }
         };
 
+        // dialog box
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         stock_save_button.setOnClickListener(new View.OnClickListener(){

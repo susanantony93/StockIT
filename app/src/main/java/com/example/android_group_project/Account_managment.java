@@ -5,19 +5,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -27,6 +23,7 @@ public class Account_managment extends AppCompatActivity
 
 
     //https://stackoverflow.com/questions/22505336/email-and-phone-number-validation-in-android
+    //https://github.com/Oclemy/pwizards/blob/master/DBListView/src/com/tutorials/dbgridview/MainActivity.java
     Button save;
     EditText phonenumber,fullname,lastname, email;
     String full_name , last_name, email_text, phonenumber_text ;
@@ -38,6 +35,7 @@ public class Account_managment extends AppCompatActivity
         setContentView(R.layout.activity_account_managment);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle(" Account details");
 
         save = findViewById(R.id.save_accbtn);
         phonenumber = findViewById(R.id.editText_phn_number);
@@ -46,17 +44,14 @@ public class Account_managment extends AppCompatActivity
         email = findViewById(R.id.editText_email);
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("Contact",Context.MODE_PRIVATE);
 
-
-
-
-
-
-
+        // here we have set the account details from the shared preference
+        // values stored when user enter or changes any details in it.
         full_name = sharedPref.getString("FullName", null);
         last_name = sharedPref.getString("LastName", null);
         email_text = sharedPref.getString("email", null);
         phonenumber_text = sharedPref.getString("contact", null);
 
+        // checking if values are not null
         if (full_name != null && last_name != null && email_text != null && phonenumber_text != null) {
             phonenumber.setText(phonenumber_text);
             fullname.setText(full_name);
@@ -77,8 +72,11 @@ public class Account_managment extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
+                // we have checked validation for email and phone number here.
                 final boolean check_email = isValidMail(email.getText().toString());
                 final boolean check_phoneNumber = isValidMobile(phonenumber.getText().toString());
+                // if email and phone number are valid this logic will save account details values in
+                // shared preference storage. and will redirect to the home page.
                 if (check_phoneNumber && check_email) {
                     SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("Contact", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
@@ -99,10 +97,13 @@ public class Account_managment extends AppCompatActivity
             }
         });
     }
+
+    // method to check valid email address
     private boolean isValidMail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    // method to check valid phone number
     private boolean isValidMobile(String phone) {
         if (phone.length() == 10) {
             String length = String.valueOf(phone.length());
