@@ -4,27 +4,22 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import java.util.ArrayList;
-import java.util.List;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +28,14 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     List<ItemList> itemList;
 
-    //the recyclerview
+
     RecyclerView itemRecyclerView;
+    public ProductdbHelper db;
+    Button view_product;
 
 
-    String[] PERMISSIONS = {Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE,
-                            Manifest.permission.RECEIVE_SMS, Manifest.permission.CAMERA};
+    String[] PERMISSIONS = {Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE, Manifest.permission.LOCATION_HARDWARE, Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.RECEIVE_SMS, Manifest.permission.CAMERA, Manifest.permission.INTERNET, Manifest.permission.CALL_PHONE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +46,7 @@ public class MainActivity extends AppCompatActivity
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        db = new ProductdbHelper(this);
         FloatingActionButton fab = findViewById(R.id.fab);
 
         //http://mobiledevhub.com/2017/11/15/android-fundamentals-requesting-multiple-runtime-permissions/
@@ -65,6 +63,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        view_product = findViewById(R.id.viewItem);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -75,36 +74,45 @@ public class MainActivity extends AppCompatActivity
 
 
         //initializing the productlist
+
+
+        db = StockIt.db;
+
         itemList = new ArrayList<>();
+        Cursor product_data = db.stock_details();
+
+        while (product_data.moveToNext()) {
+            ItemList item = new ItemList();
 
 
+            item.setId( product_data.getInt(0));
+            item.setItemName(product_data.getString(1));
+            item.setItemDesc( product_data.getString(6));
+            item.setItemPrice(product_data.getInt(3));
+            item.setItemStock(product_data.getInt(2));
+            switch (item.getItemName()){
+                case "Salt":
+                    item.setItemImage(R.drawable.salt);
+                    break;
+                case "Sugar":
+                    item.setItemImage(R.drawable.sugar);
+                    break;
+                case "Milk":
+                    item.setItemImage(R.drawable.milk);
+                    break;
+                case "Pepper":
+                    item.setItemImage(R.drawable.pepper);
+                    break;
+                case "Coffee":
+                    item.setItemImage(R.drawable.coffee);
+                    break;
+                default:
+                    item.setItemImage(R.drawable.ic_launcher_foreground);
+            }
+            itemList.add(item);
+        }
         //adding some items to our list
-        itemList.add(
-                new ItemList(
-                        1,
-                        "Windsor Salt",
-                        "abcdefggggggggggggggggggggggggggggggggg",
-                        15,
-                        8,
-                        R.drawable.salt));
 
-        itemList.add(
-                new ItemList(
-                        1,
-                        "Sugar",
-                        "abcdefweqweqweweqewqewqeqweqwqwwqeqwewqw",
-                        15,
-                        5,
-                        R.drawable.sugar));
-
-        itemList.add(
-                new ItemList(
-                        1,
-                        "Nestle Coffee",
-                        "abcdefqweqweqwewqeqweqwewqewqewewdsadsda",
-                        17,
-                        7,
-                        R.drawable.coffee));
 
         //creating recyclerview adapter
         ItemListAdapter adapter = new ItemListAdapter(this, itemList);
@@ -190,23 +198,25 @@ public class MainActivity extends AppCompatActivity
     }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        int id = menuItem.getItemId();
 
         if (id == R.id.nav_alerts) {
-            Intent myintent = new Intent(MainActivity.this, view_products.class);
-            startActivity(myintent);
-        } else if (id == R.id.nav_BluetoothShare) {
-
-        } else if (id == R.id.nav_settings) {
-
+            Intent myintent1 = new Intent(MainActivity.this, alerts_list.class);
+            startActivity(myintent1);
         } else if (id == R.id.nav_account) {
-
-        } else if (id == R.id.nav_help) {
-
+            Intent myintent3 = new Intent(MainActivity.this, Account_managment.class);
+            startActivity(myintent3);
+        } else if (id == R.id.home) {
+            Intent myintent4 = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(myintent4);
+        }  else if (id == R.id.nav_help) {
+            Intent myintent5 = new Intent(MainActivity.this, Help_Page.class);
+            startActivity(myintent5);
         } else if (id == R.id.nav_About_us) {
-
+            Intent myintent6 = new Intent(MainActivity.this, About_us.class);
+            startActivity(myintent6);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

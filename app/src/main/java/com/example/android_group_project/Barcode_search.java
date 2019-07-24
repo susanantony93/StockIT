@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -12,18 +11,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.zxing.Result;
-
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
-
 import static android.Manifest.permission_group.CAMERA;
 
 public class Barcode_search extends AppCompatActivity implements ZXingScannerView.ResultHandler {
@@ -45,15 +38,13 @@ public class Barcode_search extends AppCompatActivity implements ZXingScannerVie
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if(checkPermission()){
-                Toast.makeText(Barcode_search.this, "Permission is granted" , Toast.LENGTH_LONG).show();
+                ///  Toast.makeText(Barcode_search.this, "Permission is granted" , Toast.LENGTH_LONG).show();
             }
             else{
                 requestPermission();
             }
 
         }
-
-
 
         detector = new BarcodeDetector.Builder(getApplicationContext())
                 .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE).build();
@@ -72,8 +63,6 @@ public class Barcode_search extends AppCompatActivity implements ZXingScannerVie
     public void requestPermission(){
         ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CAMERA);
     }
-
-
 
 
     public void onResume(){
@@ -107,18 +96,26 @@ public class Barcode_search extends AppCompatActivity implements ZXingScannerVie
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
-                scannerView.resumeCameraPreview(Barcode_search.this);
+//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(scanResult));
+//                startActivity(intent);
+                Intent intent = new Intent(Barcode_search.this, view_product.class);
+
+
+                intent.putExtra("barcodeResult", scanResult);
+                startActivity(intent);
             }
         });
-        builder.setNeutralButton("visit", new DialogInterface.OnClickListener() {
+        builder.setNeutralButton("Scan Again", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(scanResult));
-                startActivity(intent);
+
+                scannerView.resumeCameraPreview(Barcode_search.this);
             }
         });
         builder.setMessage(scanResult);
         AlertDialog alert = builder.create();
         alert.show();
     }
+
+
 }
