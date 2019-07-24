@@ -38,11 +38,14 @@ public class alerts_list extends AppCompatActivity
     private static final String TAG = "ktr";
     Button send_sms;
     Button open_dialer;
+    // variable to get the device current location
     private GPSTracker GPSTracker;
     double longitude;
     double latitude;
+
     TextView textdemo;
     ProductdbHelper db;
+    // variable to get database values
     Cursor cursor;
     ItemList item = new ItemList();
     ListView lvproducts;
@@ -58,6 +61,8 @@ public class alerts_list extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
+
+        toolbar.setTitle("Alert List of Products");
         send_sms = findViewById(R.id.send_sms);
         open_dialer = findViewById(R.id.open_dialer);
         textdemo = findViewById(R.id.demoText);
@@ -71,17 +76,21 @@ public class alerts_list extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+        // adapter to show the values in list view fetched from database
         adapter=new ArrayAdapter<String>(this,android.R.layout.simple_selectable_list_item,products);
         db=StockIt.db;
 
         try {
             cursor = db.stock_details_alert();
 
+            // this loop will get all the products name from cursor
             while(cursor.moveToNext())
             {
                 String name=cursor.getString(1);
                 products.add(name);
             }
+
+            // setting adapter value into list view
             lvproducts.setAdapter(adapter);
 
             if(products.size() <= 0){
@@ -96,18 +105,26 @@ public class alerts_list extends AppCompatActivity
 
         }
 
+        // shared preference object to get the phone number value from account details.
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("Contact", Context.MODE_PRIVATE);
         final String phonenumber = sharedPref.getString("contact",null);
-        if(phonenumber == null) {
-            Intent myintent = new Intent(alerts_list.this , Account_managment.class);
-            startActivity(myintent);
-        }
 
-        Log.d(TAG, phonenumber);
+
+
         send_sms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                // if phone number is not provided by the user
+                // it will redirect to the account details page to get number \.
+                if(phonenumber == null) {
+                    Intent myintent = new Intent(alerts_list.this , Account_managment.class);
+                    startActivity(myintent);
+                    Toast.makeText(getApplicationContext(),"Please provide valid phone number here to send message." ,Toast.LENGTH_LONG).show();
+
+                }else{
+
+                    // GPS tracker object to track user's live location
                 GPSTracker = new GPSTracker(alerts_list.this);
 
                 if (GPSTracker.canGetLocation()) {
@@ -119,13 +136,15 @@ public class alerts_list extends AppCompatActivity
 
                     geocoder = new Geocoder(alerts_list.this, Locale.getDefault());
 
-
+                    // this will convert latitude and longitude values into the address with pin code.
                     try {
                         addresses = geocoder.getFromLocation(latitude, longitude, 1);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
+                    // if address is null it will show toast message/
+                    // address can be null when user has not turn on their device location and internet or wifi service
                     String add = " ";
                     if(addresses != null){
                         add = addresses.get(0).getAddressLine(0);
@@ -136,6 +155,7 @@ public class alerts_list extends AppCompatActivity
 
                     String product = " ";
 
+                    // taking all the items name from list that need to be reorder.
                     if(products.size() > 0) {
                         for (int i = 0; i < products.size(); i++) {
                             product = product + " , "+ products.get(i)  ;
@@ -149,15 +169,15 @@ public class alerts_list extends AppCompatActivity
 
                     Log.d(TAG, phonenumber);
 
-
+                    // this will send a text SMS to the number stored in account details.
                     SmsManager.getDefault().sendTextMessage("+1"+phonenumber,
                             null, msg,
                             null, null);
-                    Toast.makeText(getApplicationContext(),"Message is send " ,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Message has been sent " ,Toast.LENGTH_LONG).show();
                     Log.d(TAG, "onCreate: id ,,,,,,,,,  "+ msg);
                 }
 
-            }
+            }}
         });
 
 
@@ -165,37 +185,22 @@ public class alerts_list extends AppCompatActivity
         open_dialer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                callIntent.setData(Uri.parse("tel: "+diler));
-                startActivity(callIntent);
+                if(phonenumber == null) {
+                    Intent myintent = new Intent(alerts_list.this , Account_managment.class);
+                    startActivity(myintent);
+                    Toast.makeText(getApplicationContext(),"Please provide valid phone number here." ,Toast.LENGTH_LONG).show();
+                }else {
+
+                    // this intent will redirect user to dialer with showing in dialer pad phone number stored in account details.
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                    callIntent.setData(Uri.parse("tel: " + diler));
+                    startActivity(callIntent);
+                }
 
             }
         });
     }
-    public String GetAddress(String lat, String lon)
-    {
-        Geocoder geocoder = new Geocoder(this, Locale.ENGLISH);
-        String ret = "";
-        try {
-            List<Address> addresses = geocoder.getFromLocation(Double.parseDouble(lat), Double.parseDouble(lon), 1);
-            if(addresses != null) {
-                Address returnedAddress = addresses.get(0);
-                StringBuilder strReturnedAddress = new StringBuilder("Address:\n");
-                for(int i=0; i<returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
-                }
-                ret = strReturnedAddress.toString();
-            }
-            else{
-                ret = "No Address returned!";
-            }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            ret = "Can't get Address!";
-        }
-        return ret;
-    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

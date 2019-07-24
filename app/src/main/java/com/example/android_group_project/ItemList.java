@@ -9,18 +9,20 @@ public class ItemList {
     private int itemStock;
     private double itemPrice;
     private int itemImage;
+    private String itemBarcode;
 
     public ItemList() {
 
     }
 
-    public ItemList(int id, String itemName, String itemDesc, int itemStock, double itemPrice, int itemImage) {
+    public ItemList(int id, String itemName, String itemDesc, int itemStock, double itemPrice, int itemImage, String itemBarcode) {
         this.id = id;
         this.itemName = itemName;
         this.itemDesc = itemDesc;
         this.itemStock = itemStock;
         this.itemPrice = itemPrice;
         this.itemImage = itemImage;
+        this.itemBarcode = itemBarcode;
     }
 
     public void setId(int id) {
@@ -47,6 +49,8 @@ public class ItemList {
         this.itemImage = itemImage;
     }
 
+    public void setItemBarcode(String itemBarcode){this.itemBarcode = itemBarcode;}
+
     public int getId() {
         return id;
     }
@@ -70,4 +74,8 @@ public class ItemList {
     public int getItemImage() {
         return itemImage;
     }
+    public String getItemBarcode() {
+        return itemBarcode;
+    }
+
 }

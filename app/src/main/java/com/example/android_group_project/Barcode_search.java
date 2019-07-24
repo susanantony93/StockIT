@@ -21,11 +21,15 @@ import static android.Manifest.permission_group.CAMERA;
 
 public class Barcode_search extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
+    //https://www.youtube.com/watch?v=otkz5Cwdw38
     private static final int REQUEST_CAMERA = 1;
+
+    // variable to store barcode result
     private ZXingScannerView scannerView;
 
     TextView textView;
 
+    // variable to scan barcode
     BarcodeDetector detector;
 
     @Override
@@ -46,6 +50,7 @@ public class Barcode_search extends AppCompatActivity implements ZXingScannerVie
 
         }
 
+        // creating new barcode detector object
         detector = new BarcodeDetector.Builder(getApplicationContext())
                 .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE).build();
         if(!detector.isOperational()){
@@ -67,6 +72,8 @@ public class Barcode_search extends AppCompatActivity implements ZXingScannerVie
 
     public void onResume(){
         super.onResume();
+
+        // when ever activity is created again or resumed it will show ask for scan again
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(checkPermission()){
                 if(scannerView == null){
@@ -91,15 +98,17 @@ public class Barcode_search extends AppCompatActivity implements ZXingScannerVie
     @Override
     public void handleResult(Result result) {
         final String scanResult = result.getText();
+
+        // dialog box to ask user preference if they want to scan again or it is ok
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("scan result");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
-//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(scanResult));
-//                startActivity(intent);
-                Intent intent = new Intent(Barcode_search.this, view_product.class);
 
+                // if user clicks ok user will be redirected to view product page
+                // that shows product details stored by user for that barcode.
+                Intent intent = new Intent(Barcode_search.this, view_product.class);
 
                 intent.putExtra("barcodeResult", scanResult);
                 startActivity(intent);
