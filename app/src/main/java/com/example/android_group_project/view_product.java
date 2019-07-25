@@ -135,7 +135,7 @@ public class view_product extends AppCompatActivity
                     case DialogInterface.BUTTON_POSITIVE:
                         //Yes button clicked
                         // if user click yes that it will redirect to home page and details of stock update will be stored in database.
-                        Toast.makeText(getApplicationContext(),"yes clicked " ,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext()," Inventory is updated" ,Toast.LENGTH_LONG).show();
 
                         if(!itemstock.getText().toString().equals("")){
                             db.update_stock( id_update , Integer.parseInt(itemstock.getText().toString()));
